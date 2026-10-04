@@ -41,6 +41,10 @@ The one new piece is a **cuttability check**. In the video, you judge by eye whe
 It writes an overlay (red = island, blue = too thin), and the next prompt can name exactly which piece to fix.
 The rest is plumbing: a Gemini API wrapper and a [Claude Code](https://claude.com/claude-code) skill (`SKILL.md`) that runs his round-by-round loop.
 
+## No install? Use the manual guide
+
+**[GUIDE.md](GUIDE.md)** walks through the whole method using a free chat AI (Gemini, ChatGPT, Grok, and so on), a free paint program and your laser software. You don't need Python, Claude Code or an API key.
+
 ## Example
 
 A portrait, 5 rounds, planned at 400 mm wide:
