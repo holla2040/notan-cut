@@ -75,7 +75,7 @@ In the new chat, attach the original photo and your best result. Paste the **who
 
 **Say "left side of the image" and "right side of the image,"** never the subject's own left or right. The AI mixes those up.
 
-Stop when it looks like the subject and nothing would fall out. Five rounds is usually enough. Past that, fix the rest by hand (step 8).
+Stop when it looks like the subject and nothing would fall out. Five rounds is usually enough. Past that, fix the rest by hand (step 9).
 
 ## 6. The last few loose pieces: edit the result directly
 
@@ -96,19 +96,38 @@ This is the manual version of the `check` command in this repo. It takes two min
 2. Pick a bright color like red. Take the **paint bucket** (fill) tool and click once on the biggest black area.
 3. Everything connected turns red. **Any black left over is a loose piece.** Zoom in around the eyes, teeth, ears, lettering and wheel rims.
 
-Tiny black specks you can just paint white. Bigger pieces need a bridge: ask the AI (step 6) or draw one yourself (step 8).
+Tiny black specks you can just paint white. Bigger pieces need a bridge: ask the AI (step 6) or draw one yourself (step 9).
 
-**Thin lines.** Decide how wide the finished piece will be. Then 1 mm of metal = (image width in pixels ÷ finished width in mm) pixels.
+**Thin lines.** Crop away the white margin around the art, then decide how wide the finished piece will be. Then 1 mm of metal = (image width in pixels ÷ finished width in mm) pixels.
 Example: a 2000-pixel-wide image cut 400 mm wide gives 5 pixels per mm, so a 1 mm line is 5 pixels wide. Zoom in and check that no important line is narrower than your sheet thickness.
 
-## 8. Trace, fix and cut
+## 8. Trace to an SVG
 
-1. **Trace it to a vector.** In xTool Studio: import the image, select it, then **Trace image**, and check the preview is closed outlines. Then delete the bitmap. Inkscape (free: Path → Trace Bitmap) and LightBurn trace images too.
-2. **Set the real size,** with the aspect ratio locked.
-3. **Bridge any last loose pieces by hand** with thin lines where they barely change the look. The video did this for text and wheel rims.
+The laser cuts along vector outlines, so the black-and-white image has to become an SVG. Do the paint-bucket test (step 7) first: tracing keeps every loose piece exactly as it is.
+
+**Inkscape** is free, has no account, and runs on Windows, macOS and Linux ([inkscape.org](https://inkscape.org)). Its tracer is potrace, the same one the script in this repo uses.
+
+1. **File → Import** your final image. Choose *Embed*, then OK.
+2. Select it, then **Path → Trace Bitmap**.
+3. Choose **Single scan** and the **Brightness cutoff** mode, with the threshold at about **0.5**.
+4. Turn on **Speckles** at **10**, set **Smooth corners** to **1.0** and **Optimize** to **0.2**. These are the settings the script uses.
+5. Click **Apply**. The traced shape lands exactly on top of the image.
+6. Click the traced shape and drag it aside to uncover the image. Click the image and press **Delete**, so only the vector is left.
+7. Select the vector, lock the aspect ratio (the padlock in the toolbar), set the units to **mm**, and type your finished **width**.
+8. **File → Save As**, and choose **Plain SVG**.
+
+Zoom in and compare it with the image. The black areas should be filled shapes with clean edges.
+If small holes or specks went missing, lower Speckles. If edges look jagged, raise Smooth corners.
+
+**Or trace in your laser software.** xTool Studio (**Trace image**) and LightBurn (**Trace Image**) can trace too. Check that the preview is closed outlines, then delete the image.
+
+## 9. Fix and cut
+
+1. **Import the SVG into your laser software** at the size you set. Don't stretch it: the thin-line check (step 7) assumed that size.
+2. **Bridge any last loose pieces by hand** with thin lines where they barely change the look. The video did this for text and wheel rims.
    Or add a **border frame** that touches the art, so everything connects to it. It's sturdier and gives you room for mounting holes.
-4. **Cut.** The video used 20 ga cold-rolled steel on an xTool MetalFab: material preset "1 mm carbon steel," 2 mm nozzle, compressed-air assist, calibrated height sensor. Degrease the steel first; it ships oiled.
-5. **Finish.** Knock the dross off the bottom edges, wipe with alcohol, and spray paint (black works on most walls). He mounted his on a planed pine board.
+3. **Cut.** The video used 20 ga cold-rolled steel on an xTool MetalFab: material preset "1 mm carbon steel," 2 mm nozzle, compressed-air assist, calibrated height sensor. Degrease the steel first; it ships oiled.
+4. **Finish.** Knock the dross off the bottom edges, wipe with alcohol, and spray paint (black works on most walls). He mounted his on a planed pine board.
 
 ## Other materials
 

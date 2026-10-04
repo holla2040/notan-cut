@@ -39,7 +39,7 @@ The one new piece is a **cuttability check**. In the video, you judge by eye whe
 - **Thin metal:** areas narrower than your minimum metal width at the finished size, which would burn away or warp.
 
 It writes an overlay (red = island, blue = too thin), and the next prompt can name exactly which piece to fix.
-The rest is plumbing: a Gemini API wrapper and a [Claude Code](https://claude.com/claude-code) skill (`SKILL.md`) that runs his round-by-round loop.
+The rest is plumbing: a Gemini API wrapper, a potrace step that writes the cut file as an SVG at the real size, and a [Claude Code](https://claude.com/claude-code) skill (`SKILL.md`) that runs his round-by-round loop.
 
 ## No install? Use the manual guide
 
@@ -49,12 +49,13 @@ The rest is plumbing: a Gemini API wrapper and a [Claude Code](https://claude.co
 
 A portrait, 5 rounds, planned at 400 mm wide:
 
-| Source photo | Final, ready to trace |
+| Source photo | Final art |
 | --- | --- |
 | <img src="examples/portrait/020703-070728.jpg" alt="source photo" width="400"> | <img src="examples/portrait/020703-070728_notan/round5_clean.png" alt="final Notan art" width="400"> |
 
 Portraits are the hard case: the eyes, nose and mouth tend to float free inside an open white face.
 By round 5 the whole face is connected. Two loose pieces remain, the shirt spikes in the bottom-right corner, and they get bridged in xTool Studio.
+The cut file, traced with potrace at 400 mm wide, is [`020703-070728.svg`](examples/portrait/020703-070728_notan/020703-070728.svg).
 Every prompt (`prompt1–5.txt`), every round and its overlay, and the hand-off note ([`README.md`](examples/portrait/020703-070728_notan/README.md)) are in [`examples/portrait/`](examples/portrait/).
 
 ## Install
@@ -68,14 +69,16 @@ export GEMINI_API_KEY=...        # Windows: setx GEMINI_API_KEY "..."
 python3 ~/.claude/skills/notan/notan.py selftest
 ```
 
-Then, in Claude Code, give it a photo and say `/notan`. Optional: [potrace](https://potrace.sourceforge.net/), for the SVG fallback when xTool Studio isn't available.
+You also need [potrace](https://potrace.sourceforge.net/) to write the SVG: `sudo apt install potrace` on Linux, `brew install potrace` on macOS, or the Windows build from its site, on your PATH.
+
+Then, in Claude Code, give it a photo and say `/notan`.
 
 ## Use without Claude
 
 ```
 notan.py gen PHOTO OUT.png --prompt-file P.txt [--ref PREV.png] [--size 2K]   # one Gemini (Nano Banana Pro) call
 notan.py check IMG.png --width-mm 400 [--min-mm 1.0] [--fix]                  # islands + thin metal, writes IMG_check.png
-notan.py trace IMG.png OUT.svg --width-mm 400                                 # potrace fallback
+notan.py trace IMG.png OUT.svg --width-mm 400                                 # SVG cut file at real size (potrace)
 notan.py selftest
 ```
 

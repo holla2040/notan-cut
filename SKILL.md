@@ -25,7 +25,7 @@ Black = metal that stays. White = cut away. Every black area must connect to one
 | --- | --- |
 | `notan.py gen PHOTO OUT.png --prompt-file P.txt [--ref PREV.png] [--size 2K]` | One Nano Banana Pro call (`gemini-3-pro-image`). Each call is stateless, so it acts like a new chat. |
 | `notan.py check IMG.png --width-mm W [--min-mm M] [--fix]` | JSON report on islands (pieces that fall out) and metal that is too thin. Writes `IMG_check.png`: red = island, blue = too thin. `--fix` writes `IMG_clean.png` with specks under 4 mm² turned white. |
-| `notan.py trace IMG.png OUT.svg --width-mm W` | potrace fallback, only when xTool Studio can't be driven |
+| `notan.py trace IMG.png OUT.svg --width-mm W` | potrace trace to the cut file: closed black-fill paths, page exactly W mm wide |
 | `notan.py selftest` | Checks that the island and thin-line detection works |
 
 Each `gen` call is a paid image generation. Limit it to **5 rounds** per photo unless the user says otherwise.
@@ -81,21 +81,24 @@ Correction sentences, by problem:
 **Stop** once the check shows no islands except specks, thin metal is under 0.5 %, and it clearly looks like the subject. Then run `check --fix` and continue with `roundN_clean.png`.
 **After 5 rounds without passing:** stop, show the user the best round and its overlay, and say which islands remain. They can be bridged by hand in xTool Studio with very thin lines, as in the video.
 
-### 4. xTool Studio
+### 4. Trace to SVG
 
-xTool Studio has no command line. If you can control the desktop (computer use), do these steps yourself. If not, stop here and give the user this list with the real file name and width filled in:
+Run `notan.py trace roundN_clean.png <job>/<photo-stem>.svg --width-mm W`. This is the cut file.
+The SVG page is exactly W mm wide, the same width the check used, so it imports at the real size. The art inside is narrower than W wherever the image has a white margin. Don't rescale it to W, or the thin-metal check no longer holds.
+Check it: render it (e.g. `inkscape <stem>.svg --export-type=png --export-filename=<job>/<stem>_svg.png --export-background=white --export-background-opacity=1`), look at it, then run `check` on that render. It should show the same islands as `roundN_clean.png`; extra specks under 1 mm² are rendering noise.
 
-1. New project, then import `roundN_clean.png`.
-2. Select the image, then **Trace image**. Check that the preview is a single *closed* outline set (closed paths are what make it cuttable), then apply.
-3. Delete the bitmap, keeping only the vector. Set the vector's width to **W mm** with the aspect ratio locked.
-4. Optional (ask the user): add a border frame touching the art so everything connects, mounting holes, or stencil-font text in empty space.
-5. Look for loose pieces one last time. Bridge any you find with very thin lines in places where they barely change the look (text and wheel rims needed this in the video).
-6. Export SVG to the job folder as `<photo-stem>.svg`.
-7. MetalFab settings used in the video for 20 ga cold-rolled steel: material preset "1 mm carbon steel", 2 mm nozzle, compressed-air assist, calibrate the height sensor, then process. Degrease oiled steel first.
+### 5. xTool Studio
 
-Fallback when xTool Studio can't be used: `notan.py trace roundN_clean.png <job>/<stem>.svg --width-mm W`. This needs potrace on PATH.
+xTool Studio has no command line. If you can control the desktop (computer use), do these steps yourself. If not, stop here and give the user this list with the real file name filled in:
 
-### 5. Write the job README, then report
+1. New project, then import `<photo-stem>.svg`. Keep it at the size it imports at; don't rescale it.
+   (If potrace isn't installed: import `roundN_clean.png`, select it, **Trace image**, check the preview is *closed* outlines, apply, delete the bitmap, then set the width to W mm with the aspect ratio locked.)
+2. Optional (ask the user): add a border frame touching the art so everything connects, mounting holes, or stencil-font text in empty space.
+3. Look for loose pieces one last time. Bridge any you find with very thin lines in places where they barely change the look (text and wheel rims needed this in the video).
+4. Save the project (`.xs`) in the job folder. If you added bridges or a frame, also export the result as `<photo-stem>_final.svg`.
+5. MetalFab settings used in the video for 20 ga cold-rolled steel: material preset "1 mm carbon steel", 2 mm nozzle, compressed-air assist, calibrate the height sensor, then process. Degrease oiled steel first.
+
+### 6. Write the job README, then report
 
 Write `<job>/README.md` with the next steps for this piece. Model it on `<skill-dir>/examples/portrait/020703-070728_notan/README.md`, which is a real run (the portrait example): same sections, same order, same level of detail, but every fact comes from **this** run. That means:
 - the photo name, image to cut, width, date, rounds used
@@ -103,16 +106,16 @@ Write `<job>/README.md` with the next steps for this piece. Model it on `<skill-
 - the island fixes that fit *these* islands (drop that section if there are none)
 - the thin-metal note (drop it if under 0.5 %)
 - the subject-specific places to look in the final pass
-- mounting suggestions in this design's solid areas, and the export name `<stem>.svg`
+- mounting suggestions in this design's solid areas, and the SVG name `<stem>.svg`
 
 Keep the xTool Studio, cut and finish steps. If the user gave a material other than 20 ga steel, adjust them.
 
-Then reply in a few lines: the rounds used, the final image path, loose pieces left, thin %, and the README path.
+Then reply in a few lines: the rounds used, the final image path, the SVG path, loose pieces left, thin %, and the README path.
 
 ## Setup (once per machine)
 
 - `pip install opencv-python numpy pillow`
 - Gemini API key in `GEMINI_API_KEY`. On Windows: `setx GEMINI_API_KEY "..."`, then restart the terminal.
 - xTool Studio installed.
-- Optional: potrace (Windows build from potrace.sourceforge.net, on PATH), for the fallback trace only.
+- potrace on PATH, for `trace`: `sudo apt install potrace` (Linux), `brew install potrace` (macOS), or the Windows build from potrace.sourceforge.net.
 - Check: `python notan.py selftest` prints `selftest ok`.

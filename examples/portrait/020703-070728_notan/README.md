@@ -2,6 +2,7 @@
 
 Source photo: `../020703-070728.jpg`
 Image to cut: **`round5_clean.png`**, planned at **400 mm wide** (the default; no width was given).
+Cut file: **`020703-070728.svg`**, traced from it with potrace. The page is 400 × 300 mm; the art inside is about 359 × 291 mm, because the image has a white margin on the left.
 Made with the `notan` skill on 2026-10-04 in 5 Gemini rounds. Every prompt is saved as `prompt1–5.txt`.
 
 ## Where it stands
@@ -22,16 +23,17 @@ If you prefer the lighter face of round 1, it would need all the face bridges ad
 
 ```
 python3 ~/.claude/skills/notan/notan.py check round5_clean.png --width-mm <W>
+python3 ~/.claude/skills/notan/notan.py trace round5_clean.png 020703-070728.svg --width-mm <W>
 ```
 
 At smaller sizes, more hair tips fall under 1 mm. At 500 mm or more, most of them pass.
 
-## 2. Trace in xTool Studio
+## 2. Import the SVG into xTool Studio
 
-1. New project, then import `round5_clean.png`.
-2. Select it, then **Trace image**. In the preview, check that it is one set of *closed* outlines with black kept as the shape, then apply.
-3. Delete the bitmap so only the vector remains.
-4. Lock the aspect ratio and set the width to **W mm** (400 unless you changed it).
+1. New project, then import `020703-070728.svg`.
+2. Keep it at the size it imports at (art about 359 mm wide). Don't stretch it to 400 mm; the thin-metal check assumed this size.
+
+The SVG is already traced, so xTool Studio's **Trace image** isn't needed. To trace there instead: import `round5_clean.png`, **Trace image**, check that the preview is *closed* outlines, apply, delete the bitmap, and set the width to 400 mm with the aspect ratio locked.
 
 ## 3. Connect the two shirt spikes
 
@@ -57,7 +59,7 @@ Optional: import the SVG into Fusion, extrude it 1 mm, and drag the body around.
 
 ## 7. Export
 
-Export the SVG to this folder as `020703-070728.svg`. Keep the `.xs` project file next to it.
+If you added a frame or bridges, export the result to this folder as `020703-070728_final.svg`. Keep the `.xs` project file next to it.
 
 ## 8. Cut (xTool MetalFab, as in the video)
 
@@ -78,7 +80,8 @@ Export the SVG to this folder as `020703-070728.svg`. Keep the `.xs` project fil
 
 | File | What it is |
 | --- | --- |
-| `round5_clean.png` | Image to trace |
+| `020703-070728.svg` | Cut file, traced from `round5_clean.png` |
+| `round5_clean.png` | Image the SVG was traced from |
 | `round5_check.png` | Problem overlay for round 5 |
 | `round1–5.png`, `prompt1–5.txt` | Every round and the prompt that produced it |
 | `round*_check.png` | Overlay for each round |
