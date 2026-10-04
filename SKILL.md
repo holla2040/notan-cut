@@ -76,7 +76,7 @@ Correction sentences, by problem:
 | Missing a feature | `The <feet> should also include <small claws>.` |
 | Grey, gradients or shadows | `Use only pure black and pure white, no grey, no shading, no shadows.` |
 
-**When only a few islands are left, edit the result directly.** Pass the best round itself as the photo (`gen roundN.png roundN+1.png`, no `--ref`). Write a short prompt that starts with "This is Notan style black and white art that will be cut from metal… Make only these changes and keep everything else exactly as it is:", then number each bridge and say where it goes, using "left/right side of the image" and never the subject's own left or right. Don't re-send the photo with `--ref` and "keep it the same": the model copies the reference and ignores the fixes (boys example, round 3). Each direct edit can break a joint somewhere else, so check every round.
+**When only a few islands are left, edit the result directly.** Pass the best round itself as the photo (`gen roundN.png roundN+1.png`, no `--ref`). Write a short prompt that starts with "This is Notan style black and white art that will be cut from metal… Make only these changes and keep everything else exactly as it is:", then number each bridge and say where it goes, using "left/right side of the image" and never the subject's own left or right. Don't re-send the photo with `--ref` and "keep it the same": the model copies the reference and ignores the fixes (portrait example, round 3). Each direct edit can break a joint somewhere else, so check every round.
 
 **Stop** once the check shows no islands except specks, thin metal is under 0.5 %, and it clearly looks like the subject. Then run `check --fix` and continue with `roundN_clean.png`.
 **After 5 rounds without passing:** stop, show the user the best round and its overlay, and say which islands remain. They can be bridged by hand in xTool Studio with very thin lines, as in the video.
@@ -97,7 +97,7 @@ Fallback when xTool Studio can't be used: `notan.py trace roundN_clean.png <job>
 
 ### 5. Write the job README, then report
 
-Write `<job>/README.md` with the next steps for this piece. Model it on `<skill-dir>/examples/boys/020703-070728_notan/README.md`, which is a real run (the boys portrait): same sections, same order, same level of detail, but every fact comes from **this** run. That means:
+Write `<job>/README.md` with the next steps for this piece. Model it on `<skill-dir>/examples/portrait/020703-070728_notan/README.md`, which is a real run (the portrait example): same sections, same order, same level of detail, but every fact comes from **this** run. That means:
 - the photo name, image to cut, width, date, rounds used
 - a status table built from the last `check` (loose pieces named by where they are, specks removed, thin %)
 - the island fixes that fit *these* islands (drop that section if there are none)

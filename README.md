@@ -47,11 +47,11 @@ A portrait, 5 rounds, planned at 400 mm wide:
 
 | Source photo | Final, ready to trace |
 | --- | --- |
-| ![source photo](examples/boys/020703-070728.jpg) | ![final Notan art](examples/boys/020703-070728_notan/round5_clean.png) |
+| ![source photo](examples/portrait/020703-070728.jpg) | ![final Notan art](examples/portrait/020703-070728_notan/round5_clean.png) |
 
 Portraits are the hard case: the eyes, nose and mouth tend to float free inside an open white face.
 By round 5 the whole face is connected. Two loose pieces remain, the shirt spikes in the bottom-right corner, and they get bridged in xTool Studio.
-Every prompt (`prompt1–5.txt`), every round and its overlay, and the hand-off note ([`README.md`](examples/boys/020703-070728_notan/README.md)) are in [`examples/boys/`](examples/boys/).
+Every prompt (`prompt1–5.txt`), every round and its overlay, and the hand-off note ([`README.md`](examples/portrait/020703-070728_notan/README.md)) are in [`examples/portrait/`](examples/portrait/).
 
 ## Install
 
