@@ -51,7 +51,7 @@ A portrait, 5 rounds, planned at 400 mm wide:
 
 | Source photo | Final, ready to trace |
 | --- | --- |
-| ![source photo](examples/portrait/020703-070728.jpg) | ![final Notan art](examples/portrait/020703-070728_notan/round5_clean.png) |
+| <img src="examples/portrait/020703-070728.jpg" alt="source photo" width="400"> | <img src="examples/portrait/020703-070728_notan/round5_clean.png" alt="final Notan art" width="400"> |
 
 Portraits are the hard case: the eyes, nose and mouth tend to float free inside an open white face.
 By round 5 the whole face is connected. Two loose pieces remain, the shirt spikes in the bottom-right corner, and they get bridged in xTool Studio.
