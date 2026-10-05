@@ -67,7 +67,8 @@ In the new chat, attach the original photo and your best result. Paste the **who
 | --- | --- |
 | Too blocky, looks like a stencil | `Add more detail than the previous generation, using the highlights as the guide.` |
 | Too busy, too many fragments | `Slightly, and I mean slightly, reduce the detail from the previous image; it should be a level right in the middle of the previous two images.` (attach both earlier rounds) |
-| A piece would fall out | `The <part> is a separate piece; connect it to the <neighbour> with a solid black bridge.` |
+| A piece would fall out (not in a face) | `The <part> is a separate piece; connect it to the <neighbour> with a solid black bridge.` |
+| An eye, the nose or the mouth would fall out | See **Faces** below. Don't use the word "bridge". |
 | Lines too thin in one area | `Lines in the <area> are too thin to cut; make them at least twice as thick.` |
 | Background or floor showing | `Ignore the <floor/background> completely; nothing but the <subject> should be black.` |
 | A feature is missing | `The <feet> should also include <small claws>.` |
@@ -77,12 +78,29 @@ In the new chat, attach the original photo and your best result. Paste the **who
 
 Stop when it looks like the subject and nothing would fall out. Five rounds is usually enough. Past that, fix the rest by hand (step 9).
 
+### Faces: connect features with lines that belong there
+
+Eyes, the nose and the mouth usually float free inside the white face. How you ask the AI to attach them decides whether the face still looks human:
+
+- **Never ask for a "bridge" in a face.** The AI draws a shape, not a line. In the portrait example it drew black wedges up to 13 mm wide across the cheeks, and the face looked like clown makeup.
+- **Don't ask for "a very thin line" either.** The AI tends to leave it out.
+- **Ask it to extend a line that's already there:** `Extend that same line, keeping its own width, until it touches <the feature>.` The extended line keeps the width of the line it grows from.
+- **Follow the real anatomy:** the smile folds run from the sides of the nose down to the corners of the mouth and end there, the side of the nose runs up to the inner corner of an eye, and the eyebrows run into the hair.
+- **Nothing may leave the corners of the mouth heading outward.** A line from the corner of the mouth up across the cheek looks like the Joker's scarred smile, however thin it is. Add: `No line may continue outward from the corners of the mouth into the cheeks.`
+- **If the AI stops a line just short,** ask it to `close the tiny gap so the tip merges into the line beside it`. Or leave the gap and close it yourself in the laser software (step 9). A natural-looking face with two small gaps to bridge by hand beats a fully connected face that looks wrong.
+
+Example, for a mouth that floats free:
+
+```
+This is Notan style black and white art of a smiling boy that will be cut from a sheet of metal with a fiber laser, so every black shape must be physically connected to the rest.  Make only these changes and keep everything else exactly as it is, including the white cheeks and chin:  1. The long curved cheek line on the left side of the image runs down from beside the nose and stops just short of the left corner of the mouth.  Extend that same line, keeping its own width, until its end touches the left corner of the mouth, and stop exactly there.  2. <the same for the other side>  No line may continue outward from the corners of the mouth into the cheeks.  Do not add any new shapes, shadows or wide bands; only lengthen these existing lines.  Keep pure black and pure white only.
+```
+
 ## 6. The last few loose pieces: edit the result directly
 
 When it's close and only a few pieces float free, change approach. Start a new chat, attach **only your best result** (not the photo), and number each fix:
 
 ```
-This is Notan style black and white art that will be cut from a sheet of metal with a fiber laser, so every black shape must be physically connected to the rest.  Make only these changes and keep everything else exactly as it is:  1. <The eyebrow and eye on the left side of the image float free inside the white face.  Join the left end of that eyebrow to the black hair next to it with a solid black bridge as thick as the eyebrow.>  2. <...>  Keep pure black and pure white only.
+This is Notan style black and white art that will be cut from a sheet of metal with a fiber laser, so every black shape must be physically connected to the rest.  Make only these changes and keep everything else exactly as it is:  1. <The eyebrow and eye on the left side of the image float free inside the white face.  Extend the left end of that eyebrow, keeping its own width, until it merges into the black hair next to it.>  2. <...>  Keep pure black and pure white only.
 ```
 
 Don't attach the original photo and say "keep it the same, but fix X." The AI copies the reference and ignores the fixes.

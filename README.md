@@ -47,16 +47,17 @@ The rest is plumbing: a Gemini API wrapper, a potrace step that writes the cut f
 
 ## Example
 
-A portrait, 5 rounds, planned at 400 mm wide:
+A portrait, 8 rounds, planned at 400 mm wide:
 
 | Source photo | Final art |
 | --- | --- |
-| <img src="examples/portrait/020703-070728.jpg" alt="source photo" width="400"> | <img src="examples/portrait/020703-070728_notan/round5_clean.png" alt="final Notan art" width="400"> |
+| <img src="examples/portrait/020703-070728_notan/020703-070728.jpg" alt="source photo" width="400"> | <img src="examples/portrait/020703-070728_notan/round8_clean.png" alt="final Notan art" width="400"> |
 
-Portraits are the hard case: the eyes, nose and mouth tend to float free inside an open white face.
-By round 5 the whole face is connected. Two loose pieces remain, the shirt spikes in the bottom-right corner, and they get bridged in xTool Studio.
+Portraits are the hard case: the eyes, nose and mouth tend to float free inside an open white face, and how they get attached decides whether the face still looks human.
+Asking Gemini for "bridges" gave this face clown makeup, and running a line out from the corner of the mouth gave it the Joker's smile. What worked was asking it to extend existing lines along the face's real anatomy.
+The mouth stops about 2 mm short of the smile folds at both corners, and two tiny hand bridges in xTool Studio close it. Those, plus the two shirt spikes in the bottom-right corner, are all that's left to bridge.
 The cut file, traced with potrace at 400 mm wide, is [`020703-070728.svg`](examples/portrait/020703-070728_notan/020703-070728.svg).
-Every prompt (`prompt1–5.txt`), every round and its overlay, and the hand-off note ([`README.md`](examples/portrait/020703-070728_notan/README.md)) are in [`examples/portrait/`](examples/portrait/).
+Every prompt (`prompt1–9.txt`), every round and its overlay, and the hand-off note ([`README.md`](examples/portrait/020703-070728_notan/README.md)) are in [`examples/portrait/`](examples/portrait/).
 
 ## Install
 

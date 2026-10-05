@@ -32,7 +32,7 @@ Each `gen` call is a paid image generation. Limit it to **5 rounds** per photo u
 
 ## Procedure
 
-Work in a job folder next to the photo, `<photo-stem>_notan/`. For each round, save `promptN.txt` and `roundN.png` there, so the user can see every prompt that was sent.
+Work in a job folder next to the photo, `<photo-stem>_notan/`. For each round, save `promptN.txt` and `roundN.png` there, so the user can see every prompt that was sent. When the run finishes, the original photo moves into this folder too (step 6), so the folder holds everything about the piece.
 
 ### 0. Look at the photo first
 
@@ -40,7 +40,7 @@ Open it and look at it yourself.
 - **Blurry, or short side under ~1000 px:** run one `gen` with `Upscale this image, keep it photographic and identical in content.` Use that output as the photo from then on.
 - **Flat lighting on a hard-surface subject** (car, machine): optionally run one `gen` that adds more dramatic lighting, reflections and shadows, or a better view angle. Ask the user first, because it changes the picture. Reflections give cars structure; on animals, fur highlights do the same job.
 - **Busy background:** that's fine. The prompt tells the model to ignore it.
-- **Portraits:** expect the eyes, nose, mouth and cheek lines to float free inside an open white face. Name those bridges by round 2.
+- **Portraits:** expect the eyes, nose, mouth and cheek lines to float free inside an open white face. Name those connections by round 2, and follow **Connecting facial features** below: the wrong wording makes the face look like a clown or the Joker.
 
 ### 1. Round 1: the base prompt
 
@@ -70,13 +70,32 @@ Correction sentences, by problem:
 | --- | --- |
 | Too blocky, looks like a stencil | `Add more detail than the previous generation, using the highlights as the guide.` |
 | Too busy, too many fragments | `Slightly, and I mean slightly, reduce the detail from the previous image; it should be a level right in the middle of the previous two images.` (pass both earlier rounds as `--ref`) |
-| Named piece is an island | `The <part> is a separate piece; connect it to the <neighbour> with a solid black bridge.` |
+| Named piece is an island (not in a face) | `The <part> is a separate piece; connect it to the <neighbour> with a solid black bridge.` |
+| Facial feature is an island | Use **Connecting facial features** below, never the word "bridge". |
 | Thin lines in an area | `Lines in the <area> are too thin to cut; make them at least twice as thick.` |
 | Background or floor showing | `Ignore the <floor/background> completely; nothing but the <subject> should be black.` |
 | Missing a feature | `The <feet> should also include <small claws>.` |
 | Grey, gradients or shadows | `Use only pure black and pure white, no grey, no shading, no shadows.` |
 
 **When only a few islands are left, edit the result directly.** Pass the best round itself as the photo (`gen roundN.png roundN+1.png`, no `--ref`). Write a short prompt that starts with "This is Notan style black and white art that will be cut from metal… Make only these changes and keep everything else exactly as it is:", then number each bridge and say where it goes, using "left/right side of the image" and never the subject's own left or right. Don't re-send the photo with `--ref` and "keep it the same": the model copies the reference and ignores the fixes (portrait example, round 3). Each direct edit can break a joint somewhere else, so check every round.
+
+**Connecting facial features.** Tested on the portrait example (rounds 4–9, `examples/portrait/020703-070728_notan/`):
+
+| Wording | What Gemini did |
+| --- | --- |
+| "Add a solid black bridge" | Drew a shape, not a line: wedges 5–13 mm wide on lit skin, like clown makeup. |
+| "A very thin line" | Drew nothing. |
+| "Extend that same line, keeping its own width, until it touches X" | Right width, 1–2 mm. Use this. |
+| A line leaving the corners of the mouth outward or upward | Looks like the Joker's scarred smile, at any thickness. Never. |
+| "…and stop exactly there" | Can stop 1–2 mm short. Follow up with "close the tiny gap so the tip merges into the line beside it", or leave the gap for a hand bridge. |
+
+Route every facial connection along real anatomy, where a line already belongs:
+- the smile folds, from the sides of the nose down to the corners of the mouth, ending there;
+- the line along the side of the nose, up to the inner corner of an eye;
+- the eyebrows, into the hair.
+
+Add `No line may continue outward from the corners of the mouth into the cheeks.` and `Do not add any new shapes, shadows or wide bands; only lengthen these existing lines.` to every face-connection prompt.
+Look at the whole face after each round, not only the joins: a joined face can still look wrong. Unbroken folds from the nose past the mouth to the chin bracket the mouth and make the face look older. A face that looks natural with two 2 mm gaps left for hand bridges beats one that's fully connected but looks wrong.
 
 **Stop** once the check shows no islands except specks, thin metal is under 0.5 %, and it clearly looks like the subject. Then run `check --fix` and continue with `roundN_clean.png`.
 **After 5 rounds without passing:** stop, show the user the best round and its overlay, and say which islands remain. They can be bridged by hand in xTool Studio with very thin lines, as in the video.
@@ -98,10 +117,12 @@ xTool Studio has no command line. If you can control the desktop (computer use),
 4. Save the project (`.xs`) in the job folder. If you added bridges or a frame, also export the result as `<photo-stem>_final.svg`.
 5. MetalFab settings used in the video for 20 ga cold-rolled steel: material preset "1 mm carbon steel", 2 mm nozzle, compressed-air assist, calibrate the height sensor, then process. Degrease oiled steel first.
 
-### 6. Write the job README, then report
+### 6. Move the photo in, write the job README, then report
+
+Move the original photo into the job folder (`mv <photo> <job>/`); don't copy it. If the photo was upscaled in step 0, keep the upscaled version in the job folder as well. Do this only after the last `gen` call, because every round re-sends the photo from its original path.
 
 Write `<job>/README.md` with the next steps for this piece. Model it on `<skill-dir>/examples/portrait/020703-070728_notan/README.md`, which is a real run (the portrait example): same sections, same order, same level of detail, but every fact comes from **this** run. That means:
-- the photo name, image to cut, width, date, rounds used
+- the photo name (now in the job folder, so no `../`), image to cut, width, date, rounds used
 - a status table built from the last `check` (loose pieces named by where they are, specks removed, thin %)
 - the island fixes that fit *these* islands (drop that section if there are none)
 - the thin-metal note (drop it if under 0.5 %)
@@ -110,7 +131,7 @@ Write `<job>/README.md` with the next steps for this piece. Model it on `<skill-
 
 Keep the xTool Studio, cut and finish steps. If the user gave a material other than 20 ga steel, adjust them.
 
-Then reply in a few lines: the rounds used, the final image path, the SVG path, loose pieces left, thin %, and the README path.
+Then reply in a few lines: the rounds used, where the photo now lives, the final image path, the SVG path, loose pieces left, thin %, and the README path.
 
 ## Setup (once per machine)
 

@@ -34,7 +34,10 @@ def gen(photo, out, prompt, refs=(), size="2K"):
     req = urllib.request.Request(URL, json.dumps(body).encode(), {
         "Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
     resp = json.load(urllib.request.urlopen(req, timeout=300))
-    parts = resp["candidates"][0]["content"]["parts"]
+    cand = (resp.get("candidates") or [{}])[0]
+    parts = cand.get("content", {}).get("parts")
+    if not parts:  # refused: promptFeedback.blockReason, or a candidate with only a finishReason
+        sys.exit("blocked by Gemini: " + json.dumps(resp.get("promptFeedback") or {"finishReason": cand.get("finishReason")}))
     imgs = [p["inlineData"]["data"] for p in parts if "inlineData" in p]
     if not imgs:
         sys.exit("no image returned: " + " ".join(p.get("text", "") for p in parts)[:500])
