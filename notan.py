@@ -81,7 +81,7 @@ def cmd_check(a):
     metal = binarize(cv2.imread(a.img))
     rep, lab, islands, specks, thin = check(metal, a.width_mm, a.min_mm)
     vis = np.full(metal.shape + (3,), 255, np.uint8)
-    vis[metal] = (90, 90, 90)
+    vis[metal] = (0, 0, 0)                          # black, like the cut art
     vis[thin] = (255, 120, 0)                       # blue (BGR)
     vis[np.isin(lab, islands)] = (0, 0, 255)        # red
     base = os.path.splitext(a.img)[0]

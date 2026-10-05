@@ -5,6 +5,13 @@ Image to cut: **`round2_clean.png`**, planned at **400 mm wide** (the default; n
 Cut file: **`jesse.svg`**, traced from it with potrace. The page is 400 × 300 mm; the art inside is about 317 × 275 mm, because the image has a white margin on the right and at the top.
 Made with the `notan` skill on 2026-10-04 in 2 Gemini rounds. Every prompt is saved as `prompt1–2.txt`.
 
+| Supplied photo | Where we stopped: `jesse.svg`, no loose pieces |
+| --- | --- |
+| <img src="jesse.jpg" alt="supplied photo" width="600"> | <img src="jesse.svg" alt="jesse.svg, the cut file" width="600"> |
+
+> [!NOTE]
+> **No loose pieces.** Nothing falls out when cut, and no hand repairs are needed in xTool Studio.
+
 ## Where it stands
 
 | Check | Result | What to do |
@@ -15,6 +22,7 @@ Made with the `notan` skill on 2026-10-04 in 2 Gemini rounds. Every prompt is sa
 | Metal thinner than 1 mm | 1.07 % of the metal, mostly pointed fur tips | Accept it, or thicken the worst tips (step 3) |
 
 `round2_clean_check.png` shows what's left: blue = too thin. There's no red, so nothing falls out.
+
 Round 1 had two loose pieces (a fur stroke at the bottom edge and a whisker stroke in the muzzle). Round 2 bridged both and thickened the fur tips, without changing anything else.
 
 ## 1. Pick the size

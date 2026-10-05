@@ -123,6 +123,8 @@ Move the original photo into the job folder (`mv <photo> <job>/`); don't copy it
 
 Write `<job>/README.md` with the next steps for this piece. Model it on `<skill-dir>/examples/portrait/020703-070728_notan/README.md`, which is a real run (the portrait example): same sections, same order, same level of detail, but every fact comes from **this** run. That means:
 - the photo name (now in the job folder, so no `../`), image to cut, width, date, rounds used
+- right under those lines, a two-image table: the supplied photo and the result the run stopped at, side by side, both as `<img ... width="600">` so they show at the same size (if their aspect ratios differ, give both the same `height` instead). If loose pieces remain, the right-hand image is `roundN_clean_check.png` (loose pieces in red) and its column title says how many loose pieces are shown in red; never title it as a finished cut file. If none remain, it is `<stem>.svg`, titled as having no loose pieces.
+- directly under that table, a GitHub alert box. If islands remain (not specks), use `> [!WARNING]`: in bold, how many loose pieces and where they are, then that they would fall out when cut and must be repaired by hand in xTool Studio before cutting, with the steps that do it. If none remain, use `> [!NOTE]` saying no loose pieces and no hand repairs needed.
 - a status table built from the last `check` (loose pieces named by where they are, specks removed, thin %)
 - the island fixes that fit *these* islands (drop that section if there are none)
 - the thin-metal note (drop it if under 0.5 %)

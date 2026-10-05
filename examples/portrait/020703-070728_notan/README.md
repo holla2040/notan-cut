@@ -5,6 +5,13 @@ Image to cut: **`round8_clean.png`**, planned at **400 mm wide** (the default; n
 Cut file: **`020703-070728.svg`**, traced from it with potrace. The page is 400 × 300 mm; the art inside is about 359 × 291 mm, because the image has a white margin on the left.
 Made with the `notan` skill on 2026-10-04 in 8 Gemini rounds, plus round 9 as an alternative. Every prompt is saved as `prompt1–9.txt`.
 
+| Supplied photo | Where we stopped: round 8, **3 loose pieces in red** (blue = too thin) |
+| --- | --- |
+| <img src="020703-070728.jpg" alt="supplied photo" width="600"> | <img src="round8_clean_check.png" alt="round 8 with the loose pieces in red" width="600"> |
+
+> [!WARNING]
+> **This image still has 3 loose pieces: the mouth and the two shirt spikes in the bottom-right corner.** They would fall out when cut, so they must be repaired by hand in xTool Studio before cutting. Step 3 bridges the mouth, and step 4 connects the shirt spikes.
+
 ## Where it stands
 
 | Check | Result | What to do |
